@@ -1,0 +1,21 @@
+{
+  "name": "texteditor2",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "draft-js": "^0.10.3",
+    "draftjs-to-html": "^0.7.6",
+    "firebase": "^4.6.0",
+    "html-to-draftjs": "^1.0.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-draft-wysiwyg": "^1.10.12",
+    "react-scripts": "1.0.14"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
