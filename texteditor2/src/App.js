@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import fire from './fire';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'; //get the wiggy-wiggy
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './App.css';
 
 class App extends Component {
