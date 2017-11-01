@@ -29,12 +29,12 @@
 
 body {
   font-family: 'Open Sans', sans-serif;
-  background-color: #fff;
+  background-color: #D7CEC7;
 }
 
 header {
   color: #fff;
-  background-color: #103D5D;
+  background-color: white;
   padding: 33px 0 25px 15px;
 }
 
@@ -52,8 +52,9 @@ header h1 {
   font-weight: 600;
   letter-spacing: 0.3px;
   display: inline-block;
+  text-align: center;
   margin: 0;
-  vertical-align: middle;
+  color: #565656;
 
 }
 
@@ -77,6 +78,7 @@ header i {
 .wrapper {
   max-width: 1100px;
   margin: 0 auto;
+  text-align: center;
 }
 
 .add-item {
@@ -90,6 +92,7 @@ header i {
   width: 25%;
   margin-right: auto;
 }
+
 
 .display-item {
   width: 65%;
@@ -142,7 +145,7 @@ h2 {
 }
 
 li h3 {
-  background-color: #103D5D;
+  background-color: #851429;
   margin: 0;
   color: #fff;
   font-weight: 300;
@@ -161,12 +164,12 @@ form button {
 button {
   border-radius: 2px;
   min-width: 88px;
-  background-color: #FA6900;
+  background-color: #565656;
   cursor: pointer;
   border: 0;
   min-width: 120px;
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
   padding: 10px 6px;
 }
@@ -182,4 +185,16 @@ button {
 .user-profile img {
   border-radius: 50%;
   max-width: 100%;
+}
+
+.noteBookIcon {
+  padding: 10px;
+  height: 75px;
+  width:100px;
+}
+
+.inner
+{
+    width:30px;
+    display: inline-block;
 }

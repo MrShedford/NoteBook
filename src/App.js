@@ -45,16 +45,15 @@ class App extends Component {
                   <div className="wrapper">
                     <ul>
                       {this.state.items.map((item) => {
-                        return (
-                          <li key={item.id}>
-                            <h3>{item.topic}</h3>
-                            <p>brought by: {item.user}
-                              {item.user === this.state.user.displayName || item.user === this.state.user.email
-                                ? <button onClick={() => this.removeItem(item.id)}>Remove Item</button>
-                                : null}
-                            </p>
-                          </li>
-                        )
+                        return (item.user === this.state.user.displayName || item.user === this.state.user.email
+                          ? <li key={item.id}>
+                              <h3>{item.topic}</h3>
+                              <p>
+                                author: {item.user}
+                                <button onClick={() => this.removeItem(item.id)}>Remove Item</button>
+                              </p>
+                            </li>
+                          : null)
                       })}
                     </ul>
                   </div>
