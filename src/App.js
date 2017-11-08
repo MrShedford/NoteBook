@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
 import './App.css';
 import firebase, {auth, provider} from './firebase.js';
+import {Button} from 'react-bootstrap';
+import homePageImage1 from './jumbotron.jpg';
+import {Grid} from 'react-bootstrap';
+import {Row} from 'react-bootstrap';
+import {Col} from 'react-bootstrap';
+
 
 class App extends Component {
   constructor() {
@@ -21,10 +27,11 @@ class App extends Component {
       <div className='app'>
         <header>
           <div className='wrapper'>
-            <h1>NoteBook</h1>
+            <h1>noteBk</h1>
+
             {this.state.user
-              ? <button onClick={this.logout}>Log Out</button>
-              : <button onClick={this.login}>Log In</button>
+              ? <Button className="headerButton" onClick={this.logout}>Log Out</Button>
+              : <Button className="headerButton" onClick={this.login}>Log In/Register</Button>
 }
           </div>
         </header>
@@ -61,7 +68,26 @@ class App extends Component {
               </div>
             </div>
           : <div className='wrapper'>
-            <p>You must be logged in to see the potluck list and submit to it.</p>
+            <img src={homePageImage1} className="images" />
+            <Grid>
+              <Row>
+                <Col md={4}>
+                  <h2>Notes</h2>
+                  <p>Create notes quickly and easily thanks to the simplified UI</p>
+            <p>You will never forget a thing with noteBK.</p>
+                </Col>
+                <Col md={4}>
+                  <h2>Reminders</h2>
+                  <p>Set a reminder for when you can not afford to be late to a meeting, appointment
+          or even a party. With LiveSync technology, you can even share your reminders with colleagues, friends or family.</p>
+                </Col>
+                <Col md={4}>
+                  <h2>To-do Lists</h2>
+                  <p>Have you ever went shopping and forgot something you needed to buy? Never waste time again
+          wth noteBKs To-do lists that can be synched with anyone you want.</p>
+                </Col>
+              </Row>
+            </Grid>
           </div>
 }
       </div>

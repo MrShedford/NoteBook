@@ -9,7 +9,7 @@
 
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 100px;
   padding: 20px;
   color: white;
 }
@@ -29,13 +29,13 @@
 
 body {
   font-family: 'Open Sans', sans-serif;
-  background-color: #D7CEC7;
+  background-color: #D3D3D3;
 }
 
 header {
   color: #fff;
-  background-color: white;
-  padding: 33px 0 25px 15px;
+  background-color: #333333;
+  padding: 5px 5px 5px 5px;
 }
 
 header p {
@@ -49,12 +49,13 @@ header .wrapper {
 
 header h1 {
   font-size: 25px;
-  font-weight: 600;
+  font-weight: 200;
   letter-spacing: 0.3px;
   display: inline-block;
   text-align: center;
   margin: 0;
-  color: #565656;
+  color: #999999;
+  font-family: Courier New;
 
 }
 
@@ -197,4 +198,22 @@ button {
 {
     width:30px;
     display: inline-block;
+}
+
+.headerButton {
+    border-radius: 2px;
+    min-width: 88px;
+    border: 0;
+    min-width: 120px;
+    color: black;
+    font-size: 13px;
+    padding: 5px 5px;
+}
+
+.images {
+  border-radius: 5px;
+  padding: 20px 10px;
+  max-width: 100%;
+  height: auto;
+
 }
