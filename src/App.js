@@ -45,7 +45,7 @@ class App extends Component {
                   <form onSubmit={this.handleSubmit}>
                     <input type="text" name="username" placeholder="What's your name?" onChange={this.handleChange} value={this.state.user.displayName || this.state.user.email}/>
                     <input type="text" name="topic" placeholder="Name of topic?" onChange ={this.handleChange} value={this.state.topic}/>
-                    <button>Add to Stack</button>
+                    <button>Create NoteBk</button>
                   </form>
                 </section>
                 <section className='display-item'>
@@ -55,10 +55,11 @@ class App extends Component {
                         return (item.user === this.state.user.displayName || item.user === this.state.user.email
                           ? <li key={item.id}>
                               <h3>{item.topic}</h3>
-                              <p>
-                                author: {item.user}
-                                <button onClick={() => this.removeItem(item.id)}>Remove Item</button>
-                              </p>
+                              <h4>
+                                Author: {item.user}
+                              </h4>
+                              <Button id="button1">View NoteBk</Button>
+                              <Button id="button2" onClick={() => this.removeItem(item.id)}>Delete NoteBk</Button>
                             </li>
                           : null)
                       })}
@@ -78,7 +79,7 @@ class App extends Component {
                 </Col>
                 <Col md={4}>
                   <h2>Reminders</h2>
-                  <p>Set a reminder for when you can not afford to be late to a meeting, appointment
+                  <p>Set a reminder for when you cannot afford to be late to a meeting, appointment
           or even a party. With LiveSync technology, you can even share your reminders with colleagues, friends or family.</p>
                 </Col>
                 <Col md={4}>
