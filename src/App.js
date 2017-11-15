@@ -1,6 +1,15 @@
 import React, {Component} from 'react';
 import './App.css';
 import firebase, {auth, provider} from './firebase.js';
+import {Button} from 'react-bootstrap';
+import homePageImage1 from './jumbotron.jpg';
+import {Grid} from 'react-bootstrap';
+import {Row} from 'react-bootstrap';
+import {Col} from 'react-bootstrap';
+import { Route } from 'react-router-dom';
+import { Modal } from 'react-bootstrap';
+import NoteBookEditor from './Editor/NoteBookEditor.js';
+
 
 class App extends Component {
   constructor() {
@@ -9,22 +18,26 @@ class App extends Component {
       username: '',
       topic: '',
       items: [],
-      user: null //add this line in here for the user information
+      user: null, //add this line in here for the user information
+	  open: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+	this.closeModal = this.closeModal.bind(this);
+    this.openModal = this.openModal.bind(this);
   }
   render() {
     return (
       <div className='app'>
         <header>
           <div className='wrapper'>
-            <h1>NoteBook</h1>
+            <h1>noteBk</h1>
+
             {this.state.user
-              ? <button onClick={this.logout}>Log Out</button>
-              : <button onClick={this.login}>Log In</button>
+              ? <Button className="headerButton" onClick={this.logout}>Log Out</Button>
+              : <Button className="headerButton" onClick={this.login}>Log In/Register</Button>
 }
           </div>
         </header>
@@ -38,23 +51,43 @@ class App extends Component {
                   <form onSubmit={this.handleSubmit}>
                     <input type="text" name="username" placeholder="What's your name?" onChange={this.handleChange} value={this.state.user.displayName || this.state.user.email}/>
                     <input type="text" name="topic" placeholder="Name of topic?" onChange ={this.handleChange} value={this.state.topic}/>
-                    <button>Add to Stack</button>
+                    <button>Create NoteBk</button>
                   </form>
                 </section>
                 <section className='display-item'>
                   <div className="wrapper">
                     <ul>
                       {this.state.items.map((item) => {
-                        return (
-                          <li key={item.id}>
-                            <h3>{item.topic}</h3>
-                            <p>brought by: {item.user}
-                              {item.user === this.state.user.displayName || item.user === this.state.user.email
-                                ? <button onClick={() => this.removeItem(item.id)}>Remove Item</button>
-                                : null}
-                            </p>
-                          </li>
-                        )
+                        return (item.user === this.state.user.displayName || item.user === this.state.user.email
+                          ? <li key={item.id}>
+                              <h3>{item.topic}</h3>
+                              <h4>
+                                Author: {item.user}
+                              </h4>
+							  	
+								{/* OLD CODE
+									window.location.replace(window.location.href + "editor")
+									BELOW -> Modal Code
+								*/}
+                              	<Button id="button1" onClick={this.openModal}>Toggle NoteBk</Button>
+								<Modal show={this.state.open} onHide={this.closeModal}>
+									<Modal.Header closeButton>
+            							<Modal.Title>Editor</Modal.Title>
+          							</Modal.Header>
+          							<Modal.Body>
+            							<NoteBookEditor />
+          							</Modal.Body>
+          							<Modal.Footer>
+										<Button >Save</Button>
+            							<Button onClick={this.closeModal}>Close</Button>
+
+          							</Modal.Footer>
+        						</Modal>
+								<Route path="/editor" component={NoteBookEditor}>	
+							    </Route> 
+                              <Button id="button2" onClick={() => this.removeItem(item.id)}>Delete NoteBk</Button>
+							</li>
+                          : null)
                       })}
                     </ul>
                   </div>
@@ -62,12 +95,40 @@ class App extends Component {
               </div>
             </div>
           : <div className='wrapper'>
-            <p>You must be logged in to see the potluck list and submit to it.</p>
+            <img src={homePageImage1} className="images" />
+            <Grid>
+              <Row>
+                <Col md={4}>
+                  <h2>Notes</h2>
+                  <p>Create notes quickly and easily thanks to the simplified UI</p>
+            <p>You will never forget a thing with noteBK.</p>
+                </Col>
+                <Col md={4}>
+                  <h2>Reminders</h2>
+                  <p>Set a reminder for when you cannot afford to be late to a meeting, appointment
+          or even a party. With LiveSync technology, you can even share your reminders with colleagues, friends or family.</p>
+                </Col>
+                <Col md={4}>
+                  <h2>To-do Lists</h2>
+                  <p>Have you ever went shopping and forgot something you needed to buy? Never waste time again
+          wth noteBKs To-do lists that can be synched with anyone you want.</p>
+                </Col>
+              </Row>
+            </Grid>
           </div>
 }
       </div>
     );
   }
+
+  closeModal() {
+    this.setState({open: false})
+  }
+
+  openModal() {
+    this.setState({open: true})
+  }
+
   handleChange(e) { //this deals with form changes
     this.setState({
       [e.target.name]: e.target.value

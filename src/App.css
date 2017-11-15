@@ -9,7 +9,7 @@
 
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 100px;
   padding: 20px;
   color: white;
 }
@@ -29,13 +29,13 @@
 
 body {
   font-family: 'Open Sans', sans-serif;
-  background-color: #fff;
+  background-color: #D3D3D3;
 }
 
 header {
   color: #fff;
-  background-color: #103D5D;
-  padding: 33px 0 25px 15px;
+  background-color: #333333;
+  padding: 5px 5px 5px 5px;
 }
 
 header p {
@@ -49,11 +49,13 @@ header .wrapper {
 
 header h1 {
   font-size: 25px;
-  font-weight: 600;
+  font-weight: 200;
   letter-spacing: 0.3px;
   display: inline-block;
+  text-align: center;
   margin: 0;
-  vertical-align: middle;
+  color: #999999;
+  font-family: Courier New;
 
 }
 
@@ -77,6 +79,7 @@ header i {
 .wrapper {
   max-width: 1100px;
   margin: 0 auto;
+  text-align: center;
 }
 
 .add-item {
@@ -90,6 +93,7 @@ header i {
   width: 25%;
   margin-right: auto;
 }
+
 
 .display-item {
   width: 65%;
@@ -142,12 +146,20 @@ h2 {
 }
 
 li h3 {
-  background-color: #103D5D;
+  background-color: #565656;
   margin: 0;
   color: #fff;
   font-weight: 300;
   padding: 15px;
 }
+li h4 {
+  background-color: #666666;
+  margin: 0;
+  color: #fff;
+  font-weight: 200;
+  padding: 15px;
+}
+
 
 li p {
   padding: 15px;
@@ -161,12 +173,12 @@ form button {
 button {
   border-radius: 2px;
   min-width: 88px;
-  background-color: #FA6900;
+  background-color: #565656;
   cursor: pointer;
   border: 0;
   min-width: 120px;
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
   padding: 10px 6px;
 }
@@ -182,4 +194,41 @@ button {
 .user-profile img {
   border-radius: 50%;
   max-width: 100%;
+}
+
+.noteBookIcon {
+  padding: 10px;
+  height: 75px;
+  width:100px;
+}
+
+.inner
+{
+    width:30px;
+    display: inline-block;
+}
+
+.headerButton {
+    border-radius: 2px;
+    min-width: 88px;
+    border: 0;
+    min-width: 120px;
+    color: black;
+    font-size: 13px;
+    padding: 5px 5px;
+}
+
+.images {
+  border-radius: 5px;
+  padding: 20px 10px;
+  max-width: 100%;
+  height: auto;
+
+}
+
+#button1, #button2{
+  display: inline-block;
+  font-size: 15px;
+  padding:10px;
+  margin:10px;
 }
