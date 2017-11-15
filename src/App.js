@@ -10,7 +10,6 @@ import { Route } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
 import NoteBookEditor from './Editor/NoteBookEditor.js';
 
-
 class App extends Component {
   constructor() {
     super();
@@ -19,13 +18,13 @@ class App extends Component {
       topic: '',
       items: [],
       user: null, //add this line in here for the user information
-	  open: false
+      open: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
-	this.closeModal = this.closeModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
   }
   render() {
@@ -67,29 +66,31 @@ class App extends Component {
 							  	
 								{/* OLD CODE
 									window.location.replace(window.location.href + "editor")
-									BELOW -> Modal Code
 								*/}
                               	<Button id="button1" onClick={this.openModal}>Toggle NoteBk</Button>
-								<Modal show={this.state.open} onHide={this.closeModal}>
-									<Modal.Header closeButton>
-            							<Modal.Title>Editor</Modal.Title>
-          							</Modal.Header>
-          							<Modal.Body>
-            							<NoteBookEditor />
-          							</Modal.Body>
-          							<Modal.Footer>
-										<Button >Save</Button>
-            							<Button onClick={this.closeModal}>Close</Button>
-
-          							</Modal.Footer>
-        						</Modal>
+								
 								<Route path="/editor" component={NoteBookEditor}>	
 							    </Route> 
                               <Button id="button2" onClick={() => this.removeItem(item.id)}>Delete NoteBk</Button>
 							</li>
+							
                           : null)
+
                       })}
+
                     </ul>
+					<Modal show={this.state.open} onHide={this.closeModal}>
+						<Modal.Header closeButton>
+            				<Modal.Title>Editor</Modal.Title>
+          				</Modal.Header>
+          				<Modal.Body>
+            				<NoteBookEditor />
+          				</Modal.Body>
+          				<Modal.Footer>
+							<Button >Save</Button>
+            				<Button onClick={this.closeModal}>Close</Button>
+          				</Modal.Footer>
+        			</Modal>
                   </div>
                 </section>
               </div>
