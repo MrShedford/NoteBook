@@ -63,34 +63,28 @@ class App extends Component {
                               <h4>
                                 Author: {item.user}
                               </h4>
-							  	
-								{/* OLD CODE
-									window.location.replace(window.location.href + "editor")
-								*/}
+				{/* OLD CODE
+					window.location.replace(window.location.href + "editor")
+					<Route path="/editor" component={NoteBookEditor}></Route> 
+				*/}
                               	<Button id="button1" onClick={this.openModal}>Toggle NoteBk</Button>
-								
-								<Route path="/editor" component={NoteBookEditor}>	
-							    </Route> 
-                              <Button id="button2" onClick={() => this.removeItem(item.id)}>Delete NoteBk</Button>
-							</li>
-							
+                              	<Button id="button2" onClick={() => this.removeItem(item.id)}>Delete NoteBk</Button>
+				</li>		
                           : null)
-
                       })}
-
                     </ul>
-					<Modal show={this.state.open} onHide={this.closeModal}>
-						<Modal.Header closeButton>
+			<Modal show={this.state.open} onHide={this.closeModal}>
+				<Modal.Header closeButton>
             				<Modal.Title>Editor</Modal.Title>
-          				</Modal.Header>
+          			</Modal.Header>
           				<Modal.Body>
-            				<NoteBookEditor />
+            					<NoteBookEditor />
           				</Modal.Body>
-          				<Modal.Footer>
-							<Button >Save</Button>
+          			<Modal.Footer>
+					<Button >Save</Button>
             				<Button onClick={this.closeModal}>Close</Button>
-          				</Modal.Footer>
-        			</Modal>
+          			</Modal.Footer>
+        		</Modal>
                   </div>
                 </section>
               </div>
