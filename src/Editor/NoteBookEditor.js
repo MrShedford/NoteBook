@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-//import fire from './fire';
+import firebase, {auth, provider} from './firebase.js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './Editor.css';
+import '../App.js';
+
 
 class NoteBookEditor extends Component {
   constructor(props) {
     super(props);
+console.log(window.key);
     this.state = {
        editorState: EditorState.createEmpty(),
+       key: ''
     }
   }
 
@@ -30,24 +34,27 @@ class NoteBookEditor extends Component {
       plainText
     };
   }
+	
 
-	handleSubmit(content) {
-		// const firebaseRef = fire.database().ref();
-		// firebaseRef.child("Notes").push(content);
-	}
+  handleSubmit(e) { //this deals with form submission
+ 
+    const db = firebase.database();
+    db.ref("notebook/"+window.key+"/text").set(e);
+   
+    
+  }
 
-	handleLoad() {
+	handleLoad(content) {
+                {/*LOAD CURRENTLY NOT WORKING */}
 		console.log("clicked");
-		/* const firebaseRef = fire.database().ref();
-		firebaseRef.child("Notes").on("value", 
-		function(data) {
-			console.log(data.val());
-		}, 
-		function (error) {
-			console.log("Error: "+error.code);
-		} 
-	  ); */
-	}
+	        const db = firebase.database().ref().child("notebook").child(window.key).child("text");
+		db.on('value',(snapshot) => {
+		let string1 = snapshot.val();
+                const string2 = JSON.parse(string1);
+		const string3 = convertFromRaw(string2);
+                console.log(string3);
+	});
+}
 
 
   render() {
@@ -63,18 +70,20 @@ class NoteBookEditor extends Component {
 			toolbar={{options:['inline','blockType','fontFamily','list','textAlign','colorPicker','history']}}
 		/>
       </div>
-	  {/*
+	  {
 		<div>
 		
-		 	THIS IS DEBUG JSON AND PLAIN TEXT
-			<p id="json"> JSON: {this.contentState.jsonStr}</p>
-			<p id="plaintext"> Plain Text: {this.contentState.plainText}</p>
-		    SAVE AND LOAD BUTTONS
-			<button type="button" id="submit" onClick={this.handleSubmit.bind(this, this.contentState.jsonStr)}>Save</button>
+		 	{/*THIS IS DEBUG JSON AND PLAIN TEXT
+			//<p id="json"> JSON: {this.contentState.jsonStr}</p>
+			//<p id="plaintext"> Plain Text: {this.contentState.plainText}</p>
+		    SAVE AND LOAD BUTTONS*/}
+	
+			
 			<button type="button" id="load" onClick={this.handleLoad.bind(this)}>Load</button>
+			<button type="button" id="submit" onClick={this.handleSubmit.bind(this, this.contentState.jsonStr)}>Save</button>
 
 	  	</div>
-	  */}
+	  }
 	</div>
 	
     );

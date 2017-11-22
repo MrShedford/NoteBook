@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import firebase, {auth, provider} from './firebase.js';
+import firebase, {auth, provider} from './Editor/firebase.js';
 import {Button} from 'react-bootstrap';
 import homePageImage1 from './jumbotron.jpg';
 import {Grid} from 'react-bootstrap';
@@ -18,7 +18,8 @@ class App extends Component {
       topic: '',
       items: [],
       user: null, //add this line in here for the user information
-      open: false
+      open: false,
+      text: ''
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,6 +27,7 @@ class App extends Component {
     this.logout = this.logout.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.openModal = this.openModal.bind(this);
+    this.printkey = this.printkey.bind(this);
   }
   render() {
     return (
@@ -63,28 +65,29 @@ class App extends Component {
                               <h4>
                                 Author: {item.user}
                               </h4>
-				{/* OLD CODE
-					window.location.replace(window.location.href + "editor")
-					<Route path="/editor" component={NoteBookEditor}></Route> 
-				*/}
-                              	<Button id="button1" onClick={this.openModal}>Toggle NoteBk</Button>
+                              	<Button id="button1" onClick={() => this.openModal(item.id)}>Toggle NoteBk</Button>
+				<Route path="/editor" component={NoteBookEditor}></Route> 
                               	<Button id="button2" onClick={() => this.removeItem(item.id)}>Delete NoteBk</Button>
-				</li>		
+				
+				</li>
+							
                           : null)
+
                       })}
+
                     </ul>
-			<Modal show={this.state.open} onHide={this.closeModal}>
-				<Modal.Header closeButton>
+					<Modal show={this.state.open} onHide={this.closeModal}>
+						<Modal.Header closeButton>
             				<Modal.Title>Editor</Modal.Title>
-          			</Modal.Header>
+          				</Modal.Header>
           				<Modal.Body>
-            					<NoteBookEditor />
+            				<NoteBookEditor/>
           				</Modal.Body>
-          			<Modal.Footer>
-					<Button >Save</Button>
-            				<Button onClick={this.closeModal}>Close</Button>
-          			</Modal.Footer>
-        		</Modal>
+          				<Modal.Footer>
+							
+            				
+          				</Modal.Footer>
+        			</Modal>
                   </div>
                 </section>
               </div>
@@ -115,14 +118,26 @@ class App extends Component {
       </div>
     );
   }
-
+	
   closeModal() {
     this.setState({open: false})
   }
 
-  openModal() {
+  openModal(itemId) {
+	window.key = itemId;
     this.setState({open: true})
+    
+	
+	
   }
+printkey(arr){
+const NoteBookStack = firebase.database().ref('notebook');
+    NoteBookStack.on('value', (snapshot) => {
+      let items = snapshot.val();
+      console.log(Object.keys(snapshot.val()));
+	});
+
+}
 
   handleChange(e) { //this deals with form changes
     this.setState({
@@ -145,10 +160,11 @@ class App extends Component {
     const NoteBookStack = firebase.database().ref('notebook');
     const item = {
       topic: this.state.topic,
-      user: this.state.user.displayName || this.state.user.email
+      user: this.state.user.displayName || this.state.user.email,
+      text: ''
     }
     NoteBookStack.push(item);
-    this.setState({topic: '', username: ''});
+    this.setState({topic: '', username: '',text:''});
   }
 
   componentDidMount() {
@@ -160,6 +176,7 @@ class App extends Component {
     const NoteBookStack = firebase.database().ref('notebook');
     NoteBookStack.on('value', (snapshot) => {
       let items = snapshot.val();
+
       let newState = [];
       for (let item in items) {
         newState.push({id: item, topic: items[item].topic, user: items[item].user});
@@ -171,7 +188,7 @@ class App extends Component {
     const noteTopic = firebase.database().ref(`/notebook/${itemId}`);
     noteTopic.remove();
   }
-
+  
 }
 
 export default App;
