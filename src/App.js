@@ -6,7 +6,9 @@ import homePageImage1 from './jumbotron.jpg';
 import {Grid} from 'react-bootstrap';
 import {Row} from 'react-bootstrap';
 import {Col} from 'react-bootstrap';
-
+import { Route } from 'react-router-dom';
+import { Modal } from 'react-bootstrap';
+import NoteBookEditor from './Editor/NoteBookEditor.js';
 
 class App extends Component {
   constructor() {
@@ -15,12 +17,15 @@ class App extends Component {
       username: '',
       topic: '',
       items: [],
-      user: null //add this line in here for the user information
+      user: null, //add this line in here for the user information
+      open: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.openModal = this.openModal.bind(this);
   }
   render() {
     return (
@@ -58,12 +63,28 @@ class App extends Component {
                               <h4>
                                 Author: {item.user}
                               </h4>
-                              <Button id="button1">View NoteBk</Button>
-                              <Button id="button2" onClick={() => this.removeItem(item.id)}>Delete NoteBk</Button>
-                            </li>
+				{/* OLD CODE
+					window.location.replace(window.location.href + "editor")
+					<Route path="/editor" component={NoteBookEditor}></Route> 
+				*/}
+                              	<Button id="button1" onClick={this.openModal}>Toggle NoteBk</Button>
+                              	<Button id="button2" onClick={() => this.removeItem(item.id)}>Delete NoteBk</Button>
+				</li>		
                           : null)
                       })}
                     </ul>
+			<Modal show={this.state.open} onHide={this.closeModal}>
+				<Modal.Header closeButton>
+            				<Modal.Title>Editor</Modal.Title>
+          			</Modal.Header>
+          				<Modal.Body>
+            					<NoteBookEditor />
+          				</Modal.Body>
+          			<Modal.Footer>
+					<Button >Save</Button>
+            				<Button onClick={this.closeModal}>Close</Button>
+          			</Modal.Footer>
+        		</Modal>
                   </div>
                 </section>
               </div>
@@ -94,6 +115,15 @@ class App extends Component {
       </div>
     );
   }
+
+  closeModal() {
+    this.setState({open: false})
+  }
+
+  openModal() {
+    this.setState({open: true})
+  }
+
   handleChange(e) { //this deals with form changes
     this.setState({
       [e.target.name]: e.target.value
