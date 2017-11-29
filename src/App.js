@@ -66,15 +66,10 @@ class App extends Component {
                                 Author: {item.user}
                               </h4>
                               	<Button id="button1" onClick={() => this.openModal(item.id)}>Toggle NoteBk</Button>
-				<Route path="/editor" component={NoteBookEditor}></Route> 
                               	<Button id="button2" onClick={() => this.removeItem(item.id)}>Delete NoteBk</Button>
-				
-				</li>
-							
+							</li>
                           : null)
-
                       })}
-
                     </ul>
 					<Modal show={this.state.open} onHide={this.closeModal}>
 						<Modal.Header closeButton>
@@ -84,8 +79,6 @@ class App extends Component {
             				<NoteBookEditor/>
           				</Modal.Body>
           				<Modal.Footer>
-							
-            				
           				</Modal.Footer>
         			</Modal>
                   </div>
@@ -126,12 +119,10 @@ class App extends Component {
   openModal(itemId) {
 	window.key = itemId;
     this.setState({open: true})
-    
-	
-	
   }
-printkey(arr){
-const NoteBookStack = firebase.database().ref('notebook');
+
+	printkey(arr){
+	const NoteBookStack = firebase.database().ref('notebook');
     NoteBookStack.on('value', (snapshot) => {
       let items = snapshot.val();
       console.log(Object.keys(snapshot.val()));
