@@ -1,21 +1,31 @@
 import React, { Component } from 'react';
-import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
+import { ContentState, EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import firebase, {auth, provider} from './firebase.js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './Editor.css';
 import '../App.js';
 
+const parsedData = "{\n \"entityMap\": {},\n \"blocks\": [\n  {\n   \"key\": \"70tea\",\n   \"text\": \"gsrshtbsd\",\n   \"type\": \"unstyled\",\n   \"depth\": 0,\n   \"inlineStyleRanges\": [],\n   \"entityRanges\": [],\n   \"data\": {}\n  }\n ]\n}";
 
 class NoteBookEditor extends Component {
   constructor(props) {
-    super(props);
-console.log(window.key);
+  super(props);
+  	const db = firebase.database().ref().child("notebook").child(window.key).child("text");
+  	db.on('value',(snapshot) => {
+		const data = snapshot.val();
+		//parsedData = convertFromRaw(JSON.parse(data));
+		console.log(JSON.parse(data));
+	});
+	console.log(window.key);
+	
     this.state = {
-       editorState: EditorState.createEmpty(),
+       editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(parsedData))),
        key: ''
     }
   }
+  
+   
 
    onEditorStateChange: Function = (editorState) => {
     this.setState({
@@ -27,8 +37,8 @@ console.log(window.key);
     const contentState = this.state.editorState.getCurrentContent();
     const rawJson = convertToRaw(contentState);
     const jsonStr = JSON.stringify(rawJson, null, 1);
+	//const plainText = contentState.getBlocksAsArray().map(block => block.getText());
 	const plainText = contentState.getPlainText();
-    //const plainText = contentState.getBlocksAsArray().map(block => block.getText());
     return {
       jsonStr,
       plainText
@@ -37,24 +47,18 @@ console.log(window.key);
 	
 
   handleSubmit(e) { //this deals with form submission
- 
     const db = firebase.database();
     db.ref("notebook/"+window.key+"/text").set(e);
-   
-    
   }
 
-	handleLoad(content) {
-                {/*LOAD CURRENTLY NOT WORKING */}
-		console.log("clicked");
-	        const db = firebase.database().ref().child("notebook").child(window.key).child("text");
-		db.on('value',(snapshot) => {
-		let string1 = snapshot.val();
-                const string2 = JSON.parse(string1);
-		const string3 = convertFromRaw(string2);
-                console.log(string3);
-	});
-}
+  handleLoad(content) {
+	const db = firebase.database().ref().child("notebook").child(window.key).child("text");
+	db.on('value',(snapshot) => {
+		const data = snapshot.val();
+		const parsedData = convertFromRaw(JSON.parse(data));
+		console.log(JSON.parse(data));
+		});
+  	}
 
 
   render() {
@@ -72,23 +76,19 @@ console.log(window.key);
       </div>
 	  {
 		<div>
-		
-		 	{/*THIS IS DEBUG JSON AND PLAIN TEXT
-			//<p id="json"> JSON: {this.contentState.jsonStr}</p>
-			//<p id="plaintext"> Plain Text: {this.contentState.plainText}</p>
-		    SAVE AND LOAD BUTTONS*/}
-	
-			
+			{/*
+			<p id="json1">{this.contentState.jsonStr}</p>
+			<p id="plaintext"> Plain Text: {this.contentState.plainText}</p>
+		    */}
 			<button type="button" id="load" onClick={this.handleLoad.bind(this)}>Load</button>
 			<button type="button" id="submit" onClick={this.handleSubmit.bind(this, this.contentState.jsonStr)}>Save</button>
-
 	  	</div>
 	  }
 	</div>
 	
     );
   } 
-}
+}	
 
 export default NoteBookEditor;
 
