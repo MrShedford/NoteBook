@@ -6,27 +6,16 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './Editor.css';
 import '../App.js';
 
-const parsedData = "{\n \"entityMap\": {},\n \"blocks\": [\n  {\n   \"key\": \"70tea\",\n   \"text\": \"gsrshtbsd\",\n   \"type\": \"unstyled\",\n   \"depth\": 0,\n   \"inlineStyleRanges\": [],\n   \"entityRanges\": [],\n   \"data\": {}\n  }\n ]\n}";
-
 class NoteBookEditor extends Component {
   constructor(props) {
-  super(props);
-  	const db = firebase.database().ref().child("notebook").child(window.key).child("text");
-  	db.on('value',(snapshot) => {
-		const data = snapshot.val();
-		//parsedData = convertFromRaw(JSON.parse(data));
-		console.log(JSON.parse(data));
-	});
-	console.log(window.key);
-	
+	super(props);
+  	console.log(window.key);	
     this.state = {
-       editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(parsedData))),
+       editorState: EditorState.createEmpty(),
        key: ''
     }
   }
   
-   
-
    onEditorStateChange: Function = (editorState) => {
     this.setState({
       editorState,
@@ -46,20 +35,25 @@ class NoteBookEditor extends Component {
   }
 	
 
-  handleSubmit(e) { //this deals with form submission
+  handleSubmit(e) { // saving text
     const db = firebase.database();
     db.ref("notebook/"+window.key+"/text").set(e);
   }
 
-  handleLoad(content) {
+  setEditorContent () { // loading text
 	const db = firebase.database().ref().child("notebook").child(window.key).child("text");
 	db.on('value',(snapshot) => {
-		const data = snapshot.val();
+	const data = snapshot.val();
+	console.log(data);
+	if(data == "") {
+		// do nothing
+	} else {
 		const parsedData = convertFromRaw(JSON.parse(data));
-		console.log(JSON.parse(data));
-		});
-  	}
-
+		const editorState = EditorState.push(this.state.editorState, parsedData);
+		this.setState({ editorState });
+		}
+	});
+  }
 
   render() {
 	const { editorState } = this.state;
@@ -79,13 +73,13 @@ class NoteBookEditor extends Component {
 			{/*
 			<p id="json1">{this.contentState.jsonStr}</p>
 			<p id="plaintext"> Plain Text: {this.contentState.plainText}</p>
+			onClick={this.handleLoad.bind(this)}
 		    */}
-			<button type="button" id="load" onClick={this.handleLoad.bind(this)}>Load</button>
+			<button type="button" id="load" onClick={() => this.setEditorContent()}>Load</button>
 			<button type="button" id="submit" onClick={this.handleSubmit.bind(this, this.contentState.jsonStr)}>Save</button>
 	  	</div>
 	  }
 	</div>
-	
     );
   } 
 }	
