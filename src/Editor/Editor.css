@@ -20,8 +20,10 @@ body {
 
 #submit {
  float: left;
+ margin-top: 25px;
 }
 
 #load {
  float: right;
+ margin-top: 25px;
 }
