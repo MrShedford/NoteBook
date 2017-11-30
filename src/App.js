@@ -71,12 +71,14 @@ class App extends Component {
                           : null)
                       })}
                     </ul>
-					<Modal show={this.state.open} onHide={this.closeModal}>
-						<Modal.Header closeButton>
-            				<Modal.Title>Editor</Modal.Title>
+					<Modal show={this.state.open} onHide={this.closeModal} backdrop="static">
+						<Modal.Header>
+            				<Modal.Title>Editor
+							<button className="customClose" onClick={this.closeModal}>X</button>
+							</Modal.Title>
           				</Modal.Header>
           				<Modal.Body>
-            				<NoteBookEditor/>
+							<NoteBookEditor/>	
           				</Modal.Body>
           				<Modal.Footer>
           				</Modal.Footer>
