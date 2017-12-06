@@ -5,24 +5,40 @@ import firebase, {auth, provider} from './firebase.js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './Editor.css';
 import '../App.js';
+import {getDefaultKeyBinding, KeyBindingUtil} from 'draft-js';
+const {hasCommandModifier} = KeyBindingUtil;
 
 class NoteBookEditor extends Component {
   constructor(props) {
 	super(props);
-  	console.log(window.key);	
+  	console.log(window.key);
+        this.handleKeyCommand = this.handleKeyCommand.bind(this);	
     this.state = {
        editorState: EditorState.createEmpty(),
-       key: ''
+       
+       
     }
   }
-  
+   myKeyBindingFn(e) {
+  if (KeyBindingUtil.hasCommandModifier(e) && e.keyCode === 83 /* a key */) {
+    return 'editor-a';
+  }
+  return getDefaultKeyBinding(e);
+}
+  handleSubmit(e) { // saving text
+    const db = firebase.database();
+    db.ref("notebook/"+window.key+"/text").set(e);
+  }
+
+
+
    onEditorStateChange: Function = (editorState) => {
     this.setState({
       editorState,
     })
   };
 	
-	get contentState() {
+    get contentState() {
     const contentState = this.state.editorState.getCurrentContent();
     const rawJson = convertToRaw(contentState);
     const jsonStr = JSON.stringify(rawJson, null, 1);
@@ -33,22 +49,29 @@ class NoteBookEditor extends Component {
       plainText
     };
   }
-	
-
-  handleSubmit(e) { // saving text
-    const db = firebase.database();
-    db.ref("notebook/"+window.key+"/text").set(e);
+  
+  handleKeyCommand(cmd) {
+    if (cmd === 'editor-a') {
+      const js = this.contentState.jsonStr;
+      const db = firebase.database();
+      db.ref("notebook/"+window.key+"/text").set(js);
+      console.log(js)
+      return 'handled';
+      }
+      return 'not-handled';
   }
+
+
 
   setEditorContent () { // loading text
 	const db = firebase.database().ref().child("notebook").child(window.key).child("text");
 	db.on('value',(snapshot) => {
 	const data = snapshot.val();
-	console.log(data);
 	if(data == "") {
 		// do nothing
 	} else {
 		const parsedData = convertFromRaw(JSON.parse(data));
+		console.log(parsedData);
 		const editorState = EditorState.push(this.state.editorState, parsedData);
 		this.setState({ editorState });
 		}
@@ -62,7 +85,9 @@ class NoteBookEditor extends Component {
       <div id="editorbox" onClick={this.focus}>
          <Editor
 			placeholder="Type a note..."
+			keyBindingFn={this.myKeyBindingFn}
 			editorState={editorState}
+                        handleKeyCommand={(cmd) => this.handleKeyCommand(cmd)}
 			onEditorStateChange={this.onEditorStateChange}
 			hashtag={{separator: ' ',trigger: '#',}}
 			toolbar={{options:['inline','blockType','fontFamily','list','textAlign','colorPicker','history']}}
